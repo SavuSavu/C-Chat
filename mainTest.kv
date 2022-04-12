@@ -1,0 +1,510 @@
+ScreenManager:
+    WelcomeScreen:
+    LoginScreen:
+    WaitingForLoginResults:
+    RegisterScreen:
+    RegisterAdditionalScreen:
+    TermsAndConditionsScreen:
+    ForgotPassword:
+    SettingsScreen:
+    MainScreen:
+    SearchFriend:
+    Chat:
+
+<WelcomeScreen>:
+    canvas.before:
+        Color:
+            rgba: 36/255, 36/255, 68/255, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    name: 'home_screen'
+    FloatLayout:
+        MDLabel:
+            id: welcome_screen
+            text: "Welcome"
+            pos_hint: {"center_x": 0.5, 'y':0.7}
+            size_hint: .8, .1
+            halign: "center"
+            
+
+        MDRaisedButton:
+            id: LoginBtn
+            text: "Login"
+            on_release: 
+                root.manager.current = 'login_screen'
+                root.manager.transition.direction = "left"
+            pos_hint: {"center_x": 0.5, 'y':0.5}
+            size_hint: .8, .1
+            
+        MDRaisedButton:
+            id: registerBtn
+            text: "Register"
+            on_release: 
+                root.manager.current = 'register_screen'
+                root.manager.transition.direction = "left"
+            pos_hint: {"center_x": 0.5,'y':0.35}
+            size_hint: .8, .1
+ 
+<LoginScreen>:
+    name: 'login_screen'
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 36/255, 36/255, 68/255, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        MDFlatButton:
+            id: backBtn
+            text: "Back"
+            pos_hint: {"x": 0, "top":1}
+            
+            md_bg_color: 243/255, 126/255, 33/255, 1
+            on_release: 
+                root.manager.current = 'home_screen'
+                root.manager.transition.direction = "right"
+        Label:
+            id: loginScreen
+            text: "login"
+            pos_hint: {"center_x": 0.5, "y":0.8}
+        MDTextField:
+            id: usernameField
+            hint_text: "Enter a username"
+            pos_hint: {"center_x": 0.5, "y":0.4}
+            size_hint: .8, .1
+            write_tab: False
+            halign: "center"
+        MDTextField:
+            id: passwordField
+            hint_text: "Enter a password"
+            password: True
+            pos_hint: {"center_x": 0.5, "y":0.3}
+            size_hint: .8, .1
+            write_tab: False
+            halign: "center"
+        BoxLayout:
+            orientation: "horizontal"
+            pos_hint: {"center_x":.5, "y":0.2}
+            size_hint: .8, 1
+
+            MDRaisedButton:
+                id: loginBtn
+                text: "Login"
+                size_hint: .3, 0.1
+                on_release: 
+                    root.manager.transition.direction = "left"
+                    root.CheckLoginData()
+            MDLabel:
+                text:""
+                size_hint: .1, .1
+            MDFlatButton:
+                id: forgotPasswordBtn
+                text: "Forgot Password"
+                size_hint: .3, 0.1
+                md_bg_color: 243/255, 126/255, 33/255, 1
+                on_release: 
+                    root.manager.current = 'forgot_password_screen'
+                    root.manager.transition.direction = "left"
+
+<WaitingForLoginResults>:
+    name: 'login_results_screen'
+    FloatLayout:
+
+<RegisterScreen>:
+    name: 'register_screen'
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 36/255, 36/255, 68/255, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        MDFlatButton:
+            id: registerBtnRegister
+            text: "Back"
+            multiline: False
+            pos_hint: {"x": 0, "top":1}
+            md_bg_color: 243/255, 126/255, 33/255, 1
+            on_release: 
+                root.manager.current = 'home_screen'
+                root.manager.transition.direction = "right"
+
+        Label:
+            id: registerScreen
+            text: "Register"
+        MDTextField:
+            id: usernameFieldRegister
+            hint_text: "Enter a username"
+            pos_hint: {"x": 0, "y":0.4}
+        MDTextField:
+            id: passwordFieldRegister
+            hint_text: "Enter a password"
+            password: True
+            pos_hint: {"x": 0, "y":0.3}
+        MDTextField:
+            id: passwordRepeatFieldRegister
+            hint_text: "Repeat your password"
+            password: True
+            pos_hint: {"x": 0, "y":0.2}  
+            #on__textinput
+            #on_press: root.ids.passwordRepeatFieldRegister.hint_text: "Passwords dont match" if root.ids.passwordFieldRegister.text == root.ids.passwordRepeatFieldRegister.text else "Repeat your password"
+
+        MDRaisedButton:
+            id: registerBtnRegister
+            text: "Next"
+            pos_hint: {"x": 0, "y":0.1}
+            on_release: 
+                root.manager.transition.direction = "left"
+                root.manager.current = 'register_additional_screen' if root.GetData() else 'register_screen'
+                root.ids.passwordFieldRegister.hint_text="Passwords dont match" if not root.GetData() else ''
+                root.ids.passwordFieldRegister.current_hint_text_color=[.9, 0, 0, .7] if not root.GetData() else []
+
+
+<Check@MDCheckbox>:
+    group: 'group'
+    size_hint: None, None
+    size: dp(48), dp(48)
+
+<RegisterAdditionalScreen>:
+    name:'register_additional_screen'
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 36/255, 36/255, 68/255, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        MDFlatButton:
+            id: registerBtnRegister
+            text: "Back"
+            pos_hint: {"x": 0, "y":0.9}
+            md_bg_color: 243/255, 126/255, 33/255, 1
+            on_release: 
+                root.manager.current = 'register_screen'
+                root.manager.transition.direction = "right"
+        Label:
+            id: registerScreen
+            text: "Additional Information"
+            pos_hint: {'center_x': .5, 'center_y': .9}
+        MDSwitch:
+            id: additionalInfoSwitch
+            disabled: False
+            active: False
+            pos_hint: {'center_x': .5, 'center_y': .7}
+            on_active: root.ChangeInputSwitch()
+        MDCheckbox:
+            id: emailCheckBox 
+            disabled: True
+            active: False
+            #disabled: True
+            pos_hint: {'center_x': .5, 'center_y': .5}
+            size_hint: 0.1, 0.1
+            on_active: root.ChangeInputEmail()
+
+        MDTextField:
+            id: emailField
+            disabled: True
+            hint_text: "Enter your email..."
+            password: False
+            pos_hint: {'center_x': .5, 'center_y': .4} 
+            size_hint_x: 0.8
+        MDCheckbox:
+            id: phoneCheckBox
+            disabled: True
+            active: False
+            pos_hint: {'center_x': .5, 'center_y': .3}
+            size_hint: 0.1, 0.1
+            on_active: root.ChangeInputPhone()
+                 
+        MDTextField:
+            id: phonePrefixField
+            disabled: True
+            hint_text: "Phone Prefix"
+            helper_text_mode: "on_error"
+            helper_text: "Enter Phone Prefix"
+            password: False
+            pos_hint: {'center_x': .2, "center_y":0.15}
+            size_hint_x: 0.15
+
+        MDTextField:
+            id: phoneNumberField
+            hint_text: "Phone number "
+            disabled: True
+            password: False
+            pos_hint: {'center_x': .7, "center_y":0.15}  
+            size_hint_x: 0.5
+
+        MDRaisedButton:
+            id: nextBtn
+            text: "Next"
+            pos_hint: {"right": 1, "bottom":0}
+            on_release:
+                root.MakeRequest() 
+
+<TermsAndConditionsScreen>:
+    name:'t_and_m'
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 36/255, 36/255, 68/255, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        MDFlatButton:
+            id: registerBtnRegister
+            text: "Back"
+            pos_hint: {"x": 0, "y":0.9}
+            on_release: 
+                root.manager.current = 'register_additional_screen'
+                root.manager.transition.direction = "right"
+        MDLabel:
+            text: "Terms And Conditions"
+            halign: "center"
+        MDCheckbox:
+            id: t_mCheck
+            size_hint: None, None
+            size: dp(48), dp(48)
+            on_press: root.ChangeCheckBoxState()
+
+
+        MDRaisedButton:
+            id: t_mButton
+            text: "Next"
+            disabled: True
+            pos_hint: {"right": 1, "bottom":0}
+            opacity: 0
+            on_release: 
+                root.manager.current = 'main_screen'
+                root.manager.transition.direction = "left"
+
+<ForgotPassword>:
+    name: 'forgot_password_screen'
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 36/255, 36/255, 68/255, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            id: forgotLable
+            text: "login"
+        MDFlatButton:
+            id: backBtn
+            text: "Back"
+            pos_hint: {"x": 0, "y":0.9}
+            on_release: 
+                root.manager.current = 'home_screen'
+                root.manager.transition.direction = "right"
+        MDTextField:
+            id: usernameField
+            hint_text: "Enter your username"
+            pos_hint: {"x": 0, "y":0.3}
+
+        MDRaisedButton:
+            id: nextBtn
+            text: "Next"
+            # pos_hint: {"x": 0, "y":0.1}
+            on_release: 
+                root.manager.transition.direction = "left"
+
+<SettingsScreen>:
+    name: 'settings_screen'
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 36/255, 36/255, 68/255, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        MDToolbar:
+            id: searchFriendToolbar
+            title:'Settings'
+            elevation: 10
+            left_action_items: [['keyboard-backspace', lambda x: root.BackToMain()]]
+            pos_hint:{"top":1}
+                    
+# inspierd by https://www.youtube.com/watch?v=M5ztWtJrY24
+# last aceesd Feb 2021
+<MainScreen>:
+    name: 'main_screen'
+    NavigationLayout:
+        ScreenManager:
+            Screen:
+                canvas.before:
+                    Color:
+                        rgba: 36/255, 36/255, 68/255, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    #always_overscroll: True
+                    MDList:
+                        pos_hint:{"top":.9} 
+                        cols: 1
+                        spacing: 10
+                        size_hint_x:1
+                        size_hint_Y: None                       
+                        do_scroll_x: False
+                        do_scroll_y: True
+                        id: container
+                
+                MDToolbar:
+                    id: mainToolbar
+                    title:'C'
+                    elevation: 10
+                    left_action_items: [['rocket-launch', lambda x: navDrawer.set_state("open")]]
+                    pos_hint:{"top":1}
+                    index: 5
+    
+    MDNavigationDrawer:
+        id: navDrawer
+        FloatLayout:
+            MDLabel:
+                id: usernameLabel 
+                text: "username"
+                size_hint: .9, 0.1
+                pos_hint:{"center_x":.5, "top":.95} 
+                halign: "center"
+    
+            MDRaisedButton:
+                text:"Seach for Friends"
+                pos_hint:{"center_x":0.5, "top": .72}
+                size_hint: .9, .05
+                on_release:
+                    navDrawer.set_state("closed")
+                    root.manager.transition.direction = "up"
+                    root.manager.current = "search_friend_screen"
+
+            MDRaisedButton:
+                text:"Settings"
+                pos_hint:{"center_x":0.5, "top": .64}
+                size_hint: .9, .05
+                on_release:
+                    navDrawer.set_state("closed")
+                    root.manager.transition.direction = "right"
+                    root.manager.current = "settings_screen"
+
+<SearchFriend>:
+    name:'search_friend_screen'
+    canvas.before:
+        Color:
+            rgba: 36/255, 36/255, 68/255, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    FloatLayout:
+        MDToolbar:
+            id: searchFriendToolbar
+            title: "User Search"
+            elevation: 10
+            left_action_items: [['keyboard-backspace', lambda x: root.BackToMain()]]
+            pos_hint:{"top":1}
+                    
+        MDTextField:
+            id: usernameField
+            hint_text: ''
+            # required: True
+            helper_text_mode: "on_error"
+            helper_text: "Enter username"
+            password: False
+            pos_hint: {"x": 0, "y":0.5}
+
+        MDRaisedButton:
+            text:"Search"
+            pos_hint:{"x":0,"y":0.4}
+            on_release:
+                root.SearchForUser()
+        MDList:
+            id: showUserList
+            bg_color: 
+
+<MyChatLable@Label>:
+    text_size: (self.width, None)
+    padding_x:30
+    padding_y:30
+
+    halign: 'right'
+    valign: 'top'
+    size_hint: (1, None)
+    markup: True
+    canvas.before:
+        Color:
+            rgba: (1,1,1,0.7)
+        Line:
+            width: 2
+            rectangle: self.x, self.y, self.width, self.height
+<Chat>:
+    name:'chat_screen'
+    canvas.before:
+        Color:
+            rgba: 36/255, 36/255, 68/255, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    NavigationLayout:
+        ScreenManager:
+            Screen:
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    always_overscroll: True
+                    MDList:
+                        pos_hint:{"top":.9}
+                        cols: 1
+                        padding: 0,100,0,0
+                        spacing: 10
+                        size_hint_x:1
+                        size_hint_Y: None
+                        do_scroll_x: False
+                        do_scroll_y: True
+                        id: container
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 1
+                    size_hint_y: .1
+   
+                    MDTextField:
+                        id: messageTextField
+                        hint_text: "Enter your message:"
+                        size_hint_x: 0.7
+                        multiline: False
+                        halign: 'left'
+                        
+                    MDFloatingActionButton:
+                        icon: "send"
+                        size_hint_x: 0.1
+                        on_release:
+                            root.SendMessage()
+                MDToolbar:
+                    id: chatToolbar
+                    title:"@joshua"
+                    elevation: 10
+                    left_action_items: [['keyboard-backspace', lambda x: root.BackToMain()]]
+                    pos_hint:{"top":1}
+                    index: 20
+        
+    MDNavigationDrawer:
+        id: navDrawer
+        BoxLayout:
+            orientation: 'vertical'
+            MDLabel:
+                id: usernameLabel 
+                text: "username"
+            MDRaisedButton:
+                text: "get back"
+                pos_hint:{"center_x":.5, "center_y":.5}
+                index:5
+                on_release:
+                    Chat.BackToMain(self)
+            MDRaisedButton:
+                text:"hello"
+                pos_hint:{"center_x":0.5}
+
